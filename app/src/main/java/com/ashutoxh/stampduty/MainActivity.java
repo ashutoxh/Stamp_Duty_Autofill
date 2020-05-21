@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,11 +66,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             // silently fail...
         }*/
 
-        TextView boeNoTxt = findViewById(R.id.boeNoTxt);
-        TextView boeDateTxt = findViewById(R.id.boeDateTxt);
-        TextView igmNoTxt = findViewById(R.id.igmNoTxt);
-        TextView itemNoTxt = findViewById(R.id.itemNoTxt);
-        TextView amountTxt = findViewById(R.id.amountTxt);
+        EditText boeNoTxt = findViewById(R.id.boeNoTxt);
+        EditText boeDateTxt = findViewById(R.id.boeDateTxt);
+        EditText igmNoTxt = findViewById(R.id.igmNoTxt);
+        EditText itemNoTxt = findViewById(R.id.itemNoTxt);
+        EditText amountTxt = findViewById(R.id.amountTxt);
 
         Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
