@@ -37,11 +37,13 @@
         android:layout_marginTop="150dp"
         android:layout_marginEnd="50dp"
         android:background="@android:color/darker_gray"
+        android:paddingLeft="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <TextView
+    <EditText
         android:id="@+id/boeNoTxt"
         android:layout_width="300dp"
         android:layout_height="40dp"
@@ -50,6 +52,8 @@
         android:layout_marginEnd="50dp"
         android:background="@android:color/darker_gray"
         android:hint="BOE NO"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textSize="20sp"
@@ -57,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/partyDropDown" />
 
-    <TextView
+    <EditText
         android:id="@+id/boeDateTxt"
         android:layout_width="300dp"
         android:layout_height="40dp"
@@ -66,6 +70,8 @@
         android:layout_marginEnd="50dp"
         android:background="@android:color/darker_gray"
         android:hint="BOE DATE"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textSize="20sp"
@@ -73,7 +79,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boeNoTxt" />
 
-    <TextView
+    <EditText
         android:id="@+id/igmNoTxt"
         android:layout_width="300dp"
         android:layout_height="40dp"
@@ -82,6 +88,8 @@
         android:layout_marginEnd="50dp"
         android:background="@android:color/darker_gray"
         android:hint="IGM NO"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textAlignment="viewStart"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +97,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boeDateTxt" />
 
-    <TextView
+    <EditText
         android:id="@+id/itemNoTxt"
         android:layout_width="300dp"
         android:layout_height="40dp"
@@ -98,6 +106,8 @@
         android:layout_marginEnd="50dp"
         android:background="@android:color/darker_gray"
         android:hint="ITEM NO"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textAlignment="viewStart"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +115,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/igmNoTxt" />
 
-    <TextView
+    <EditText
         android:id="@+id/amountTxt"
         android:layout_width="300dp"
         android:layout_height="40dp"
@@ -114,11 +124,42 @@
         android:layout_marginEnd="50dp"
         android:background="@android:color/darker_gray"
         android:hint="AMOUNT"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textAlignment="viewStart"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemNoTxt" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/partyDropDown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <RadioButton
+            android:id="@+id/seaRadioButton"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:text="SEA"
+            android:textSize="20dp" />
+
+        <RadioButton
+            android:id="@+id/AirRadioButton"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.13"
+            android:checked="false"
+            android:text="AIR"
+            android:textSize="20dp"
+            android:layout_marginTop="2dp"/>
+</RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

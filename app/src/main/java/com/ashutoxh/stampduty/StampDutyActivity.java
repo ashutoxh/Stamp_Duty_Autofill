@@ -74,16 +74,16 @@ public class StampDutyActivity extends Activity {
                                 "       onChangeScheme(\"0030046401\");\n" +
                                 "       document.getElementById(\"rperiod\").value = \"O\";\n" +
                                 "       document.getElementById(\"cmbFormID\").value = \"29\";\n" +
-                                "       document.getElementById(\"amount1\").value = \"10\";\n" +
-                                "       document.getElementById(\"Gross_Tot\").value = \"10.00\";\n" +
-                                "       document.getElementById(\"txtPANNo\").value = \"" + MainActivity.selectedPartyBean.getPAN_NO() +"\";\n" +
-                                "       document.getElementById(\"txtpartyname\").value = \"" + MainActivity.selectedPartyBean.getKEY_NAME() +"\";\n" +
-                                "       document.getElementById(\"txtprimise\").value = \"" + MainActivity.selectedPartyBean.getBLOCK_NO() +"\";\n" +
-                                "       document.getElementById(\"txtroad\").value = \"" + MainActivity.selectedPartyBean.getROAD() +"\";\n" +
-                                "       document.getElementById(\"txtdist\").value = \"" + MainActivity.selectedPartyBean.getCITY() +"\";\n" +
+                                "       document.getElementById(\"amount1\").value = \"" + MainActivity.amountString.toUpperCase() +"\";\n" +
+                                "       document.getElementById(\"Gross_Tot\").value = \"" + MainActivity.amountString.toUpperCase() +".00\";\n" +
+                                "       document.getElementById(\"txtPANNo\").value = \"" + MainActivity.selectedPartyBean.getPAN_NO().toUpperCase() +"\";\n" +
+                                "       document.getElementById(\"txtpartyname\").value = \"" + MainActivity.selectedPartyBean.getKEY_NAME().toUpperCase() +"\";\n" +
+                                "       document.getElementById(\"txtprimise\").value = \"" + MainActivity.selectedPartyBean.getBLOCK_NO().toUpperCase() +"\";\n" +
+                                "       document.getElementById(\"txtroad\").value = \"" + MainActivity.selectedPartyBean.getROAD().toUpperCase() +"\";\n" +
+                                "       document.getElementById(\"txtdist\").value = \"" + MainActivity.selectedPartyBean.getCITY().toUpperCase() +"\";\n" +
                                 "       document.getElementById(\"txtPIN\").value = \"" + MainActivity.selectedPartyBean.getPIN() +"\";\n" +
                                 "       document.getElementById(\"txtMobileNo\").value = \"9870226388\";\n" +
-                                "       document.getElementById(\"remarks\").value = \"imported vide BOE No 7277312 Dtd 17.03.2020  IGM  2249542 ITEM 109\";\n";
+                                "       document.getElementById(\"remarks\").value = \"" + MainActivity.remarksString.toUpperCase() +"\";\n";
 
                         input = new ByteArrayInputStream(injectingScript.getBytes());
 

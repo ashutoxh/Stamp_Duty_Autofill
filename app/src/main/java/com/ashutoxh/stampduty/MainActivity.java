@@ -5,8 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,24 +15,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
-    private Spinner partyDropDown;
     public static StampDutyPartyBean selectedPartyBean;
-    public static String boeNoString;
-    public static String boeDateString;
-    public static String igmNoString;
-    public static String itemNoString;
-    public static String amountString;
+    public static String remarksString;
     private ArrayList<StampDutyPartyBean> partyBeanArrayList;
     private long back_pressed;
     private Toast exitToast;
-
+    private Button submitButton;
+    private EditText boeNoTxt;
+    private EditText boeDateTxt;
+    private EditText igmNoTxt;
+    private EditText itemNoTxt;
+    private EditText amountTxt;
+    private String igmNoString;
+    private String boeNoString;
+    private String boeDateString;
+    private String itemNoString;
+    public static String amountString;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -40,7 +45,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         setContentView(R.layout.activity_main);
         partyBeanArrayList = loadPartyBeanList();
         Log.d("DB", partyBeanArrayList.toString());
-
+        Spinner partyDropDown;
         partyDropDown = findViewById(R.id.partyDropDown);
         partyDropDown.setOnItemSelectedListener(this);
 
@@ -52,30 +57,138 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nameList);
         partyDropDown.setAdapter(dataAdapter);
 
-        /*try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
+        submitButton = findViewById(R.id.submitButton);
 
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(partyDropDown);
+        boeNoTxt = findViewById(R.id.boeNoTxt);
+        boeDateTxt = findViewById(R.id.boeDateTxt);
+        igmNoTxt = findViewById(R.id.igmNoTxt);
+        itemNoTxt = findViewById(R.id.itemNoTxt);
+        amountTxt = findViewById(R.id.amountTxt);
 
-            // Set popupWindow height to 500px
-            popupWindow.setHeight(500);
-        }
-        catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
+        /*if (boeDateString.isEmpty()) {
+            boeDateTxt.setError("Please enter a date");
+            submitButton.setEnabled(false);
         }*/
+        /*if (igmNoString.isEmpty() || !igmNoString.matches("[0-9]+") || igmNoString.length() != 7) {
+            igmNoTxt.setError("IGM NO should be a number and 7 digit long");
+            submitButton.setEnabled(false);
+        }
+        if (itemNoString.isEmpty() || !itemNoString.matches("[0-9]+")) {
+            itemNoTxt.setError("ITEM NO should be a number");
+            submitButton.setEnabled(false);
+        }
+        if (amountString.isEmpty() || !amountString.matches("[0-9]+")) {
+            amountTxt.setError("AMOUNT should be a number");
+            submitButton.setEnabled(false);
+        }*/
+        //submitButton.setEnabled(true);
 
-        EditText boeNoTxt = findViewById(R.id.boeNoTxt);
-        EditText boeDateTxt = findViewById(R.id.boeDateTxt);
-        EditText igmNoTxt = findViewById(R.id.igmNoTxt);
-        EditText itemNoTxt = findViewById(R.id.itemNoTxt);
-        EditText amountTxt = findViewById(R.id.amountTxt);
+        boeNoTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (boeNoTxt.getText().toString().length() != 7 || !boeNoTxt.getText().toString().matches("[0-9]+"))
+                    boeNoTxt.setError("BOE NO should be a number and 7 digit long");
+                else {
+                    boeNoTxt.setError(null);
+                    boeNoString = boeNoTxt.getText().toString();
+                }
+            }
 
-        Button submitButton = findViewById(R.id.submitButton);
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        boeDateTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (boeDateTxt.getText().toString().isEmpty()) {
+                    boeDateTxt.setError("Please enter a date");
+                } else {
+                    boeDateTxt.setError(null);
+                    boeDateString = boeDateTxt.getText().toString();
+                }
+            }
+        });
+
+        igmNoTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (igmNoTxt.getText().toString().length() != 7 || !igmNoTxt.getText().toString().matches("[0-9]+") || igmNoTxt.getText().toString().isEmpty()) {
+                    igmNoTxt.setError("IGM NO should be a number and 7 digit long");
+                } else {
+                    igmNoTxt.setError(null);
+                    igmNoString = igmNoTxt.getText().toString();
+                }
+            }
+        });
+
+        itemNoTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (itemNoTxt.getText().toString().isEmpty() || !itemNoTxt.getText().toString().matches("[0-9]+")) {
+                    itemNoTxt.setError("ITEM NO should be a number");
+                } else {
+                    itemNoTxt.setError(null);
+                    itemNoString = itemNoTxt.getText().toString();
+                }
+            }
+        });
+
+        amountTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (amountTxt.getText().toString().isEmpty() || !amountTxt.getText().toString().matches("[0-9]+")) {
+                    amountTxt.setError("AMOUNT should be a number");
+                } else {
+                    amountTxt.setError(null);
+                    amountString = amountTxt.getText().toString();
+                }
+            }
+        });
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                remarksString = "IMPORTED VIDE BOE NO " + boeNoString + " DT " + boeDateString
+                        + " IGM NO " + igmNoString + " ITEM NO " + itemNoString;
                 openNewActivity();
             }
         });
@@ -116,8 +229,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         String item = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
-        if(!item.equals("None"))
-            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        if (!item.equals("None")) {
+            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
+            submitButton.setEnabled(true);
+        }
+        else
+            submitButton.setEnabled(false);
 
         //int partyID = Integer.parseInt(item.substring(0,item.indexOf("_")));
         for (int i = 0; i < partyBeanArrayList.size(); i++)
@@ -136,8 +253,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         if (back_pressed + 2000 > System.currentTimeMillis()) {
             this.finishAffinity();
             exitToast.cancel();
-        }
-        else{
+        } else {
             exitToast = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
             exitToast.show();
         }
