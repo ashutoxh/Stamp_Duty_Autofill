@@ -5,9 +5,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,21 +18,33 @@ import java.io.InputStream;
 
 public class StampDutyActivity extends Activity {
 
+    private long back_pressed;
+    private Toast exitToast;
+    private WebView mWebView;
+
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_stamp_duty);
 
         String domainUrl = getResources().getString(R.string.domainURL);
-        WebView mWebView;
 
-        setContentView(R.layout.activity_stamp_duty);
         mWebView = findViewById(R.id.activity_stamp_duty_webview);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setSupportMultipleWindows(true);
+        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                //Required functionality here
+                return super.onJsAlert(view, url, message, result);
+            }
+        });
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -38,11 +53,9 @@ public class StampDutyActivity extends Activity {
 
                 if (url.contains(getResources().getString(R.string.indexURI))) {
                     view.loadUrl("javascript:setTimeout(funCall('unreg'), 50)");
-                }
-                else if (url.contains(getResources().getString(R.string.revenueindexURI))) {
+                } else if (url.contains(getResources().getString(R.string.revenueindexURI))) {
                     view.loadUrl("javascript:setTimeout(jfundepartment('REV'), 50)");
-                }
-                else if (url.contains(getResources().getString(R.string.formURI))) {
+                } else if (url.contains(getResources().getString(R.string.formURI))) {
                     injectScriptFile(view); // see below ...
 
                     // test if the script was loaded
@@ -59,11 +72,11 @@ public class StampDutyActivity extends Activity {
             private void injectScriptFile(WebView view) {
                 InputStream input;
                 try {
-                    if(MainActivity.selectedPartyBean != null) {
-                        String modeOfConsignmetDistrict = (MainActivity.modeOfConsignmet.equals("SEA")) ?
+                    if (MainActivity.selectedPartyBean != null) {
+                        String modeOfConsignmetDistrict = (MainActivity.modeOfConsignment.equals("SEA")) ?
                                 "       document.getElementById(\"cmbtrea_code\").value = \"1301\";\n"                           //RAIGAD (SEA)
                                 : "       document.getElementById(\"cmbtrea_code\").value = \"7101\";\n";                        //MUMBAI (AIR)
-                        String modeOfConsignmetDistrictOffice = (MainActivity.modeOfConsignmet.equals("SEA")) ?
+                        String modeOfConsignmetDistrictOffice = (MainActivity.modeOfConsignment.equals("SEA")) ?
                                 "     document.getElementById(\"office_code_list\").value = \"IGR110~IGR03\";\n"                 //ALD_COLL OF STAMPS JDR RAIGAD
                                 : "       document.getElementById(\"office_code_list\").value = \"IGR181~IGR09\";\n";           //AOB_SBR AND ADM OFF MUMBAI SUBURBAN
 
@@ -78,18 +91,17 @@ public class StampDutyActivity extends Activity {
                                 "       onChangeScheme(\"0030046401\");\n" +
                                 "       document.getElementById(\"rperiod\").value = \"O\";\n" +                                //One Time/Adhoc
                                 "       document.getElementById(\"cmbFormID\").value = \"29\";\n" +                             //29-Stamp Duty on Delivery Order in Respect of Goods
-                                "       document.getElementById(\"amount1\").value = \"" + MainActivity.amountString.toUpperCase() +"\";\n" +
-                                "       document.getElementById(\"Gross_Tot\").value = \"" + MainActivity.amountString.toUpperCase() +".00\";\n" +
-                                "       document.getElementById(\"txtPANNo\").value = \"" + MainActivity.selectedPartyBean.getPAN_NO().toUpperCase() +"\";\n" +
-                                "       document.getElementById(\"txtpartyname\").value = \"" + MainActivity.selectedPartyBean.getKEY_NAME().toUpperCase() +"\";\n" +
-                                "       document.getElementById(\"txtprimise\").value = \"" + MainActivity.selectedPartyBean.getBLOCK_NO().toUpperCase() +"\";\n" +
-                                "       document.getElementById(\"txtroad\").value = \"" + MainActivity.selectedPartyBean.getROAD().toUpperCase() +"\";\n" +
-                                "       document.getElementById(\"txtdist\").value = \"" + MainActivity.selectedPartyBean.getCITY().toUpperCase() +"\";\n" +
-                                "       document.getElementById(\"txtPIN\").value = \"" + MainActivity.selectedPartyBean.getPIN() +"\";\n" +
+                                "       document.getElementById(\"amount1\").value = \"" + MainActivity.amountString.toUpperCase() + "\";\n" +
+                                "       document.getElementById(\"Gross_Tot\").value = \"" + MainActivity.amountString.toUpperCase() + ".00\";\n" +
+                                "       document.getElementById(\"txtPANNo\").value = \"" + MainActivity.selectedPartyBean.getPAN_NO().toUpperCase() + "\";\n" +
+                                "       document.getElementById(\"txtpartyname\").value = \"" + MainActivity.selectedPartyBean.getKEY_NAME().toUpperCase() + "\";\n" +
+                                "       document.getElementById(\"txtprimise\").value = \"" + MainActivity.selectedPartyBean.getBLOCK_NO().toUpperCase() + "\";\n" +
+                                "       document.getElementById(\"txtroad\").value = \"" + MainActivity.selectedPartyBean.getROAD().toUpperCase() + "\";\n" +
+                                "       document.getElementById(\"txtdist\").value = \"" + MainActivity.selectedPartyBean.getCITY().toUpperCase() + "\";\n" +
+                                "       document.getElementById(\"txtPIN\").value = \"" + MainActivity.selectedPartyBean.getPIN() + "\";\n" +
                                 "       document.getElementById(\"txtMobileNo\").value = \"9870226388\";\n" +
-                                "       document.getElementById(\"remarks\").value = \"" + MainActivity.remarksString.toUpperCase() +"\";\n";
+                                "       document.getElementById(\"remarks\").value = \"" + MainActivity.remarksString.toUpperCase() + "\";\n";
 
-                        System.out.println("injectingScript : \n " + injectingScript);
                         input = new ByteArrayInputStream(injectingScript.getBytes());
 
                         byte[] buffer = new byte[input.available()];
@@ -114,5 +126,26 @@ public class StampDutyActivity extends Activity {
             }
         });
         mWebView.loadUrl(domainUrl + getResources().getString(R.string.indexURI));
+    }
+
+    /*@Override
+    public void onBackPressed() {
+        if (back_pressed + 2000 > System.currentTimeMillis()) {
+            this.finishAffinity();
+            exitToast.cancel();
+        } else {
+            exitToast = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+            exitToast.show();
+        }
+        back_pressed = System.currentTimeMillis();
+    }*/
+
+    @Override
+    public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

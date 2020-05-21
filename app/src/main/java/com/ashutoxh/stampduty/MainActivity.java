@@ -39,7 +39,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private String boeDateString;
     private String itemNoString;
     public static String amountString;
-    public static String modeOfConsignmet;
+    public static String modeOfConsignment;
+    private Button registrationButton;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -61,6 +62,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         partyDropDown.setAdapter(dataAdapter);
 
         submitButton = findViewById(R.id.submitButton);
+        registrationButton = findViewById(R.id.registrationButtonMain);
 
         boeNoTxt = findViewById(R.id.boeNoTxt);
         boeDateTxt = findViewById(R.id.boeDateTxt);
@@ -78,9 +80,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 Log.d("chk", "id" + checkedId);
 
                 if (checkedId == R.id.seaRadioButton) {
-                    modeOfConsignmet = "SEA";
+                    modeOfConsignment = "SEA";
                 } else if (checkedId == R.id.airRadioButton) {
-                    modeOfConsignmet = "AIR";
+                    modeOfConsignment = "AIR";
                 }
             }
         });
@@ -160,7 +162,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (itemNoTxt.getText().toString().isEmpty() || !itemNoTxt.getText().toString().matches("[0-9]+")) {
+                if (itemNoTxt.getText().toString().isEmpty() || !itemNoTxt.getText().toString().matches("[0-9 ]+")) {
                     itemNoTxt.setError("ITEM NO should be a number");
                 } else {
                     itemNoTxt.setError(null);
@@ -194,37 +196,57 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             public void onClick(View v) {
                 remarksString = "IMPORTED VIDE BOE NO " + boeNoString + " DT " + boeDateString
                         + " IGM NO " + igmNoString + " ITEM NO " + itemNoString;
-                openNewActivity();
+                openStampDutyActivity();
+            }
+        });
+
+        registrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRegistrationActivity();
             }
         });
     }
 
-    public void openNewActivity() {
+    public void openStampDutyActivity() {
         Intent intent = new Intent(this, StampDutyActivity.class);
+        startActivity(intent);
+    }
+
+    public void openRegistrationActivity() {
+        Intent intent = new Intent(this, RegistrationActivity.class);
         //intent.putExtra("selectedPartyBean", selectedPartyBean.toString());
         startActivity(intent);
     }
 
     public ArrayList<StampDutyPartyBean> loadPartyBeanList() {
+        Cursor cursor = null;
         ArrayList<StampDutyPartyBean> partyBeanArrayList = new ArrayList<>();
-        StampDutyDatabaseDaoImpl stampDutyDatabaseDaoImpl = new StampDutyDatabaseDaoImpl(this);
-        SQLiteDatabase database = stampDutyDatabaseDaoImpl.getReadableDatabase();
+        try {
+            StampDutyDatabaseDaoImpl stampDutyDatabaseDaoImpl = new StampDutyDatabaseDaoImpl(this);
+            SQLiteDatabase database = stampDutyDatabaseDaoImpl.getReadableDatabase();
 
-        Cursor cursor = database.rawQuery("SELECT KEY_ID, KEY_NAME, PAN_NO, BLOCK_NO, ROAD, CITY, PIN FROM stampDutyPartyInfo", null);
+            cursor = database.rawQuery("SELECT KEY_ID, KEY_NAME, PAN_NO, BLOCK_NO, ROAD, CITY, PIN FROM stampDutyPartyInfo", null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
-        } else {
-            Log.d("DB", "Null database");
+            if (cursor != null) {
+                cursor.moveToFirst();
+            } else {
+                Log.d("DB", "Null database");
+            }
+            do {
+                System.out.println("Cursor " + cursor.getString(0));
+                System.out.println("Cursor " + cursor.getString(1));
+                partyBeanArrayList.add(new StampDutyPartyBean(
+                        cursor.getString(0), cursor.getString(1),
+                        cursor.getString(2), cursor.getString(3),
+                        cursor.getString(4), cursor.getString(5), cursor.getString(6)));
+            } while (cursor.moveToNext());
+        } catch (Exception e) {
+            Log.e("MainActivity", "loadPartyBeanList() : " + e.getMessage());
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
-        do {
-            partyBeanArrayList.add(new StampDutyPartyBean(
-                    cursor.getString(0), cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),
-                    cursor.getString(4), cursor.getString(5), cursor.getString(6)));
-        } while (cursor.moveToNext());
-        //database.close();
-        //cursor.close();
         return partyBeanArrayList;
     }
 
@@ -236,9 +258,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         // Showing selected spinner item
         if (!item.equals("None")) {
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
-            submitButton.setEnabled(true);
-        } else
-            submitButton.setEnabled(false);
+        }
 
         //int partyID = Integer.parseInt(item.substring(0,item.indexOf("_")));
         for (int i = 0; i < partyBeanArrayList.size(); i++)
@@ -249,7 +269,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -263,6 +282,4 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
         back_pressed = System.currentTimeMillis();
     }
-
-
 }
