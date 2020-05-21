@@ -49,10 +49,9 @@ public class StampDutyDatabaseDaoImpl extends SQLiteOpenHelper {
         insertData("None", "", "", "","", "", db);
         insertData("K B IMPEX", "AAPFK7876D", "77 RATNA JYOT INDUSTRIAL PREMISES", "IRLA GAWTHAN LANE"
                         ,"VILE PARLE MUMBAI", "400056", db);
-        insertData("HARMOY PHARMA GLASS CO", "AAIFH0443E", "H NO 550 AT JASKHAR", "POST JNPT"
+        insertData("HARMONY PHARMA GLASS CO", "AAIFH0443E", "H NO 550 AT JASKHAR", "POST JNPT"
                 ,"RAIGAD MAHARASHTRA", "400702", db);
         //db.close();
-
     }
 
     private void insertData(String KEY_NAME, String PAN_NO ,String BLOCK_NO, String ROAD, String CITY, String PIN, SQLiteDatabase database)

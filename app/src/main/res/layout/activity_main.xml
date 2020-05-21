@@ -134,6 +134,7 @@
         app:layout_constraintTop_toBottomOf="@+id/itemNoTxt" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/partyDropDown"
@@ -151,15 +152,15 @@
             android:textSize="20dp" />
 
         <RadioButton
-            android:id="@+id/AirRadioButton"
+            android:id="@+id/airRadioButton"
             android:layout_width="80dp"
             android:layout_height="25dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
             android:layout_weight="0.13"
             android:checked="false"
             android:text="AIR"
-            android:textSize="20dp"
-            android:layout_marginTop="2dp"/>
-</RadioGroup>
+            android:textSize="20dp" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

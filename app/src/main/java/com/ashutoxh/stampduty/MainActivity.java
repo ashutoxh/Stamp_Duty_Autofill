@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private String boeDateString;
     private String itemNoString;
     public static String amountString;
+    public static String modeOfConsignmet;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -65,23 +68,25 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         itemNoTxt = findViewById(R.id.itemNoTxt);
         amountTxt = findViewById(R.id.amountTxt);
 
-        /*if (boeDateString.isEmpty()) {
-            boeDateTxt.setError("Please enter a date");
-            submitButton.setEnabled(false);
-        }*/
-        /*if (igmNoString.isEmpty() || !igmNoString.matches("[0-9]+") || igmNoString.length() != 7) {
-            igmNoTxt.setError("IGM NO should be a number and 7 digit long");
-            submitButton.setEnabled(false);
-        }
-        if (itemNoString.isEmpty() || !itemNoString.matches("[0-9]+")) {
-            itemNoTxt.setError("ITEM NO should be a number");
-            submitButton.setEnabled(false);
-        }
-        if (amountString.isEmpty() || !amountString.matches("[0-9]+")) {
-            amountTxt.setError("AMOUNT should be a number");
-            submitButton.setEnabled(false);
-        }*/
-        //submitButton.setEnabled(true);
+
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+
+        radioGroup.clearCheck();
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Log.d("chk", "id" + checkedId);
+
+                if (checkedId == R.id.seaRadioButton) {
+                    modeOfConsignmet = "SEA";
+                } else if (checkedId == R.id.airRadioButton) {
+                    modeOfConsignmet = "AIR";
+                }
+            }
+        });
+
+        RadioButton seaRadioButton = findViewById(R.id.seaRadioButton);
+        seaRadioButton.setChecked(true);
 
         boeNoTxt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -232,8 +237,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         if (!item.equals("None")) {
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
             submitButton.setEnabled(true);
-        }
-        else
+        } else
             submitButton.setEnabled(false);
 
         //int partyID = Integer.parseInt(item.substring(0,item.indexOf("_")));
