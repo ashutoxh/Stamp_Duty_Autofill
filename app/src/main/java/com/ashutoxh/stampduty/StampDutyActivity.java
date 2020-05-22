@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,9 +20,9 @@ import java.io.InputStream;
 
 public class StampDutyActivity extends Activity {
 
-    private long back_pressed;
-    private Toast exitToast;
     private WebView mWebView;
+    private ProgressBar progressBar;
+    private TextView waitTxt;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -31,14 +33,22 @@ public class StampDutyActivity extends Activity {
         String domainUrl = getResources().getString(R.string.domainURL);
 
         mWebView = findViewById(R.id.activity_stamp_duty_webview);
+        progressBar = findViewById(R.id.progressBar);
+        waitTxt = findViewById(R.id.waitTxt);
+
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
+        waitTxt.setVisibility(View.VISIBLE);
+        mWebView.setVisibility(View.INVISIBLE);
+
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.getSettings().setSupportMultipleWindows(true);
+        //mWebView.getSettings().setSupportMultipleWindows(true);
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.setWebChromeClient(new WebChromeClient() {
+        mWebView.setWebChromeClient(new WebChromeClient() {             //For GRN popup
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 //Required functionality here
@@ -57,15 +67,14 @@ public class StampDutyActivity extends Activity {
                     view.loadUrl("javascript:setTimeout(jfundepartment('REV'), 50)");
                 } else if (url.contains(getResources().getString(R.string.formURI))) {
                     injectScriptFile(view); // see below ...
-
-                    // test if the script was loaded
-                    //view.loadUrl("javascript:setTimeout(injectScript(), 50)");
+                    progressBar.setVisibility(View.INVISIBLE);
+                    waitTxt.setVisibility(View.INVISIBLE);
+                    mWebView.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                System.out.println("your current url when you click on any interlink on webview that time you got url :-" + url);
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
@@ -73,10 +82,10 @@ public class StampDutyActivity extends Activity {
                 InputStream input;
                 try {
                     if (MainActivity.selectedPartyBean != null) {
-                        String modeOfConsignmetDistrict = (MainActivity.modeOfConsignment.equals("SEA")) ?
+                        String modeOfConsignmentDistrict = (MainActivity.modeOfConsignment.equals("SEA")) ?
                                 "       document.getElementById(\"cmbtrea_code\").value = \"1301\";\n"                           //RAIGAD (SEA)
                                 : "       document.getElementById(\"cmbtrea_code\").value = \"7101\";\n";                        //MUMBAI (AIR)
-                        String modeOfConsignmetDistrictOffice = (MainActivity.modeOfConsignment.equals("SEA")) ?
+                        String modeOfConsignmentDistrictOffice = (MainActivity.modeOfConsignment.equals("SEA")) ?
                                 "     document.getElementById(\"office_code_list\").value = \"IGR110~IGR03\";\n"                 //ALD_COLL OF STAMPS JDR RAIGAD
                                 : "       document.getElementById(\"office_code_list\").value = \"IGR181~IGR09\";\n";           //AOB_SBR AND ADM OFF MUMBAI SUBURBAN
 
@@ -84,8 +93,8 @@ public class StampDutyActivity extends Activity {
                                 "       onChangeDepartment();\n" +
                                 "       document.getElementById(\"cmbRec_Type_list\").value = \"12|||N\";\n" +                  //Stamp Duty on Delivery of Goods
                                 "       onChangePaymentType();\n" +
-                                modeOfConsignmetDistrict +
-                                "       onDistrictChange();\n" + modeOfConsignmetDistrictOffice +
+                                modeOfConsignmentDistrict +
+                                "       onDistrictChange();\n" + modeOfConsignmentDistrictOffice +
                                 "       onChangeOffice();\n" +
                                 "       document.getElementById(\"cmbScheme_code\").value = \"0030046401\";\n" +                //Inspector General Of Registration
                                 "       onChangeScheme(\"0030046401\");\n" +
