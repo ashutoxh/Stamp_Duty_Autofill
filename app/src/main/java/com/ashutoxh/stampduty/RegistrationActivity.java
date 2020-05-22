@@ -185,6 +185,7 @@ public class RegistrationActivity extends Activity {
                     Intent intent = new Intent(context, MainActivity.class);
                     Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
+                    finish();
                 } catch (Exception e) {
                     Log.e("RegistrationActivity", "registerButton : onClick() : " + e.getMessage());
                 }
