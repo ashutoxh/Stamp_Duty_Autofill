@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    archivesBaseName = "Stamp_Duty_Autofill"
     defaultConfig {
         applicationId "com.ashutoxh.stampduty"
         minSdkVersion 23
