@@ -38,7 +38,6 @@ public class StampDutyDatabaseDaoImpl extends SQLiteOpenHelper {
                     + CITY + " TEXT,"
                     + PIN + " TEXT"
                     + ")";
-            System.out.println("Table script is : " + CREATE_TABLE);
             Log.d("DB", "Table script is : " + CREATE_TABLE);
             db.execSQL(CREATE_TABLE);
 

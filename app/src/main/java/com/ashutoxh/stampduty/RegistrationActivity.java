@@ -3,7 +3,6 @@ package com.ashutoxh.stampduty;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class RegistrationActivity extends Activity {
 
     private EditText regNameTxt;
@@ -21,17 +23,16 @@ public class RegistrationActivity extends Activity {
     private EditText regRoadTxt;
     private EditText regCityTxt;
     private EditText regPinTxt;
+    private StampDutyPartyBean stampDutyPartyBean;
 
-    private String regNameString;
+    /*private String regNameString;
     private String regPanString;
     private String regBlockString;
     private String regRoadString;
     private String regCityString;
-    private String regPinString;
+    private String regPinString;*/
 
     private Context context;
-    private Button registerButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,10 @@ public class RegistrationActivity extends Activity {
         regRoadTxt = findViewById(R.id.regRoadTxt);
         regCityTxt = findViewById(R.id.regCityTxt);
         regPinTxt = findViewById(R.id.regPinTxt);
-        registerButton = findViewById(R.id.regButton);
+        Button registerButton = findViewById(R.id.regButton);
         context = getApplicationContext();
+
+        stampDutyPartyBean = new StampDutyPartyBean();
 
         regNameTxt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -54,7 +57,7 @@ public class RegistrationActivity extends Activity {
                     regNameTxt.setError("Only Alphabets and Numbers are allowed");
                 else {
                     regNameTxt.setError(null);
-                    regNameString = regNameTxt.getText().toString();
+                    stampDutyPartyBean.setKEY_NAME(regNameTxt.getText().toString().toUpperCase().trim());
                 }
             }
 
@@ -75,7 +78,7 @@ public class RegistrationActivity extends Activity {
                     regPanTxt.setError("Only Alphabets and Numbers are allowed");
                 else {
                     regPanTxt.setError(null);
-                    regPanString = regPanTxt.getText().toString();
+                    stampDutyPartyBean.setPAN_NO(regPanTxt.getText().toString().toUpperCase().trim());
                 }
             }
 
@@ -96,7 +99,7 @@ public class RegistrationActivity extends Activity {
                     regBlockTxt.setError("Only Alphabets and Numbers are allowed");
                 else {
                     regBlockTxt.setError(null);
-                    regBlockString = regBlockTxt.getText().toString();
+                    stampDutyPartyBean.setBLOCK_NO(regBlockTxt.getText().toString().toUpperCase().trim());
                 }
             }
 
@@ -117,7 +120,7 @@ public class RegistrationActivity extends Activity {
                     regRoadTxt.setError("Only Alphabets and Numbers are allowed");
                 else {
                     regRoadTxt.setError(null);
-                    regRoadString = regRoadTxt.getText().toString();
+                    stampDutyPartyBean.setROAD(regRoadTxt.getText().toString().toUpperCase().trim());
                 }
             }
 
@@ -138,7 +141,7 @@ public class RegistrationActivity extends Activity {
                     regCityTxt.setError("Only Alphabets and Numbers are allowed");
                 else {
                     regCityTxt.setError(null);
-                    regCityString = regCityTxt.getText().toString();
+                    stampDutyPartyBean.setCITY(regCityTxt.getText().toString().toUpperCase().trim());
                 }
             }
 
@@ -159,7 +162,7 @@ public class RegistrationActivity extends Activity {
                     regPinTxt.setError("Only 6 digit numbers are allowed");
                 else {
                     regPinTxt.setError(null);
-                    regPinString = regPinTxt.getText().toString();
+                    stampDutyPartyBean.setPIN(regPinTxt.getText().toString().toUpperCase().trim());
                 }
             }
 
@@ -178,10 +181,8 @@ public class RegistrationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    StampDutyDatabaseDaoImpl stampDutyDatabaseDaoImpl = new StampDutyDatabaseDaoImpl(context);
-                    SQLiteDatabase database = stampDutyDatabaseDaoImpl.getReadableDatabase();
-                    stampDutyDatabaseDaoImpl.insertData(regNameString, regPanString, regBlockString, regRoadString, regCityString, regPinString, database);
-
+                    //insertDataInLocal(regNameString, regPanString, regBlockString, regRoadString, regCityString, regPinString);
+                    insertDataInFirebaseDB(stampDutyPartyBean);
                     Intent intent = new Intent(context, MainActivity.class);
                     Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
@@ -191,5 +192,15 @@ public class RegistrationActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void insertDataInFirebaseDB(StampDutyPartyBean stampDutyPartyBean) {
+        DatabaseReference stampDutyDatabaseReference;
+        try {
+            stampDutyDatabaseReference = FirebaseDatabase.getInstance().getReference().child("StampDutyPartyInfo");
+            stampDutyDatabaseReference.child(String.valueOf(stampDutyPartyBean.getKEY_NAME())).setValue(stampDutyPartyBean);
+        } catch (Exception e) {
+            Log.e("RegistrationActivity", "insertDataInFirebaseDB : " + e.getMessage());
+        }
     }
 }

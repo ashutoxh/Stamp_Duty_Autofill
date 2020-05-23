@@ -30,6 +30,8 @@ public class StampDutyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stamp_duty);
 
+        Log.d("StampDutyActivity", "start");
+
         String domainUrl = getResources().getString(R.string.domainURL);
 
         mWebView = findViewById(R.id.activity_stamp_duty_webview);
@@ -58,13 +60,14 @@ public class StampDutyActivity extends Activity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.d("WebView", "your current url when webpage loading.. finish" + url);
                 super.onPageFinished(view, url);
 
                 if (url.contains(getResources().getString(R.string.indexURI))) {
                     view.loadUrl("javascript:setTimeout(funCall('unreg'), 50)");
+                    Log.d("StampDutyActivity", "unreg");
                 } else if (url.contains(getResources().getString(R.string.revenueindexURI))) {
                     view.loadUrl("javascript:setTimeout(jfundepartment('REV'), 50)");
+                    Log.d("StampDutyActivity", "REV");
                 } else if (url.contains(getResources().getString(R.string.formURI))) {
                     injectScriptFile(view); // see below ...
                     progressBar.setVisibility(View.INVISIBLE);
@@ -100,14 +103,14 @@ public class StampDutyActivity extends Activity {
                                 "       onChangeScheme(\"0030046401\");\n" +
                                 "       document.getElementById(\"rperiod\").value = \"O\";\n" +                                //One Time/Adhoc
                                 "       document.getElementById(\"cmbFormID\").value = \"29\";\n" +                             //29-Stamp Duty on Delivery Order in Respect of Goods
-                                "       document.getElementById(\"amount1\").value = \"" + MainActivity.amountString.toUpperCase() + "\";\n" +
-                                "       document.getElementById(\"Gross_Tot\").value = \"" + MainActivity.amountString.toUpperCase() + ".00\";\n" +
-                                "       document.getElementById(\"txtPANNo\").value = \"" + MainActivity.selectedPartyBean.getPAN_NO().toUpperCase() + "\";\n" +
-                                "       document.getElementById(\"txtpartyname\").value = \"" + MainActivity.selectedPartyBean.getKEY_NAME().toUpperCase() + "\";\n" +
-                                "       document.getElementById(\"txtprimise\").value = \"" + MainActivity.selectedPartyBean.getBLOCK_NO().toUpperCase() + "\";\n" +
-                                "       document.getElementById(\"txtroad\").value = \"" + MainActivity.selectedPartyBean.getROAD().toUpperCase() + "\";\n" +
-                                "       document.getElementById(\"txtdist\").value = \"" + MainActivity.selectedPartyBean.getCITY().toUpperCase() + "\";\n" +
-                                "       document.getElementById(\"txtPIN\").value = \"" + MainActivity.selectedPartyBean.getPIN() + "\";\n" +
+                                "       document.getElementById(\"amount1\").value = \"" + ((MainActivity.amountString == null) ? "" : MainActivity.amountString) + "\";\n" +
+                                "       document.getElementById(\"Gross_Tot\").value = \"" + ((MainActivity.amountString == null) ? "" : MainActivity.amountString) + ".00\";\n" +
+                                "       document.getElementById(\"txtPANNo\").value = \"" + ((MainActivity.selectedPartyBean.getPAN_NO() == null) ? "" : MainActivity.selectedPartyBean.getPAN_NO().toUpperCase()) + "\";\n" +
+                                "       document.getElementById(\"txtpartyname\").value = \"" + ((MainActivity.selectedPartyBean.getKEY_NAME() == null) ? "" : MainActivity.selectedPartyBean.getKEY_NAME().toUpperCase()) + "\";\n" +
+                                "       document.getElementById(\"txtprimise\").value = \"" + ((MainActivity.selectedPartyBean.getBLOCK_NO() == null) ? "" : MainActivity.selectedPartyBean.getBLOCK_NO().toUpperCase()) + "\";\n" +
+                                "       document.getElementById(\"txtroad\").value = \"" + ((MainActivity.selectedPartyBean.getROAD() == null) ? "" : MainActivity.selectedPartyBean.getROAD().toUpperCase()) + "\";\n" +
+                                "       document.getElementById(\"txtdist\").value = \"" + ((MainActivity.selectedPartyBean.getCITY() == null) ? "" : MainActivity.selectedPartyBean.getCITY().toUpperCase()) + "\";\n" +
+                                "       document.getElementById(\"txtPIN\").value = \"" + ((MainActivity.selectedPartyBean.getPIN() == null) ? "" : MainActivity.selectedPartyBean.getPIN()) + "\";\n" +
                                 "       document.getElementById(\"txtMobileNo\").value = \"9870226388\";\n" +
                                 "       document.getElementById(\"remarks\").value = \"" + MainActivity.remarksString.toUpperCase() + "\";\n";
 
@@ -136,18 +139,6 @@ public class StampDutyActivity extends Activity {
         });
         mWebView.loadUrl(domainUrl + getResources().getString(R.string.indexURI));
     }
-
-    /*@Override
-    public void onBackPressed() {
-        if (back_pressed + 2000 > System.currentTimeMillis()) {
-            this.finishAffinity();
-            exitToast.cancel();
-        } else {
-            exitToast = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
-            exitToast.show();
-        }
-        back_pressed = System.currentTimeMillis();
-    }*/
 
     @Override
     public void onBackPressed() {
