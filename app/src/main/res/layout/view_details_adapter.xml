@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/regName"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Name"
+        app:layout_constraintEnd_toStartOf="@+id/regNameTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/regPan"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Pan"
+        app:layout_constraintEnd_toStartOf="@+id/regPanTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regName" />
+
+    <TextView
+        android:id="@+id/regBlock"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Block No"
+        app:layout_constraintEnd_toStartOf="@+id/regBlockTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regPan" />
+
+    <TextView
+        android:id="@+id/regRoad"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Road"
+        app:layout_constraintEnd_toStartOf="@+id/regRoadTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regBlock" />
+
+    <TextView
+        android:id="@+id/regPin"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Pin"
+        app:layout_constraintEnd_toStartOf="@+id/regPinTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regArea" />
+
+    <TextView
+        android:id="@+id/regArea"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Area/City"
+        app:layout_constraintEnd_toStartOf="@+id/regCityTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regRoad" />
+
+    <TextView
+        android:id="@+id/regCityTxt"
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        android:ems="10"
+
+        android:gravity="center|start|left"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/regRoadTxt" />
+
+    <TextView
+        android:id="@+id/regNameTxt"
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+
+        android:ems="10"
+        android:gravity="center|start|left"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/regPanTxt"
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        android:ems="10"
+
+        android:gravity="center|start|left"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/regNameTxt" />
+
+    <TextView
+        android:id="@+id/regBlockTxt"
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        android:ems="10"
+
+        android:gravity="center|start|left"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/regPanTxt" />
+
+    <TextView
+        android:id="@+id/regRoadTxt"
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        android:ems="10"
+
+        android:gravity="center|start|left"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/regBlockTxt" />
+
+    <TextView
+        android:id="@+id/regPinTxt"
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        android:ems="10"
+
+        android:gravity="center|start|left"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/regCityTxt"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/dividerFooter"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/common_google_signin_btn_text_dark_focused"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regPinTxt" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
