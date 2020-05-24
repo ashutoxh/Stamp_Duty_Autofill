@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +37,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public static String remarksString;
     public static String amountString;
     public static String modeOfConsignment;
-    private Map<String, StampDutyPartyBean> partyBeanMap;
+    public static Map<String, StampDutyPartyBean> partyBeanMap;
+    public static ArrayList<String> nameList;
     private long back_pressed;
     private Toast exitToast;
     private Button submitButton;
@@ -59,6 +61,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     private StampDutyPartyBean stampDutyPartyBean;
     private Spinner partyDropDown;
+    private Button viewDetailsButton;
+
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -74,7 +78,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         submitButton = findViewById(R.id.submitButton);
         submitButton.setEnabled(false);
         Button registrationButton = findViewById(R.id.registrationButtonMain);
-        Button viewDetailsButton = findViewById(R.id.viewButtonMain);
+        viewDetailsButton = findViewById(R.id.viewButtonMain);
+        viewDetailsButton.setEnabled(false);
 
         boeNoTxt = findViewById(R.id.boeNoTxt);
         boeDateTxt = findViewById(R.id.boeDateTxt);
@@ -263,7 +268,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         //Default i.e. None
         stampDutyPartyBean.setPAN_NO("");
         stampDutyPartyBean.setBLOCK_NO("");
-        stampDutyPartyBean.setKEY_NAME("None");
+        stampDutyPartyBean.setKEY_NAME("-None-");
         stampDutyPartyBean.setCITY("");
         stampDutyPartyBean.setPIN("");
         stampDutyPartyBean.setROAD("");
@@ -292,14 +297,15 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                             }
                         }
                     }
-                    ArrayList<String> nameList = new ArrayList<>();
+                    nameList = new ArrayList<>();
 
                     for (Map.Entry<String, StampDutyPartyBean> entry : partyBeanMap.entrySet()) {
                         nameList.add(entry.getKey());
                     }
-
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, nameList);
+                    Collections.sort(nameList);
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner, nameList);
                     partyDropDown.setAdapter(dataAdapter);
+                    viewDetailsButton.setEnabled(true);
                 }
 
                 @Override
