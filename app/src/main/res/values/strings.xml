@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Stamp Duty</string>
-    <string name="action_settings">Settings</string>
-    <string name="domainURL">https://gras.mahakosh.gov.in/</string>
-    <string name="indexURI">echallan/frmIndex.php</string>
-    <string name="revenueindexURI">frmDeptechallan_entry.php</string>
-    <string name="formURI">frmguestechallan_entry.php</string>
-</resources>

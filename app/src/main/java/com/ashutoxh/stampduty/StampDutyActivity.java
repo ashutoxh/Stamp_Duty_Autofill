@@ -103,11 +103,11 @@ public class StampDutyActivity extends Activity {
                 mWebView.setVisibility(View.VISIBLE);*/
 
                 if (url.contains(getResources().getString(R.string.indexURI))) {
-                    view.loadUrl("javascript:setTimeout(funCall('unreg'), 50)");
-                    Log.d("StampDutyActivity", "unreg");
+                    view.loadUrl(getResources().getString(R.string.callPage2));
+                    Log.d("StampDutyActivity", getResources().getString(R.string.callPage2));
                 } else if (url.contains(getResources().getString(R.string.revenueindexURI))) {
-                    view.loadUrl("javascript:setTimeout(jfundepartment('REV'), 50)");
-                    Log.d("StampDutyActivity", "REV");
+                    view.loadUrl(getResources().getString(R.string.callPage3));
+                    Log.d("StampDutyActivity", getResources().getString(R.string.callPage3));
                 } else if (url.contains(getResources().getString(R.string.formURI))) {
                     injectScriptFile(view); // see below ...
                     progressBar.setVisibility(View.INVISIBLE);
