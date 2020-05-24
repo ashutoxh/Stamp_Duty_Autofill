@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
@@ -35,7 +36,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public static String remarksString;
     public static String amountString;
     public static String modeOfConsignment;
-    private ArrayList<StampDutyPartyBean> partyBeanArrayList;
+    private Map<String, StampDutyPartyBean> partyBeanMap;
     private long back_pressed;
     private Toast exitToast;
     private Button submitButton;
@@ -68,11 +69,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         partyDropDown = findViewById(R.id.partyDropDown);
         partyDropDown.setOnItemSelectedListener(this);
 
-        partyBeanArrayList = loadPartyBeanList();
+        loadPartyBeanList();
 
         submitButton = findViewById(R.id.submitButton);
         submitButton.setEnabled(false);
         Button registrationButton = findViewById(R.id.registrationButtonMain);
+        Button viewDetailsButton = findViewById(R.id.viewButtonMain);
 
         boeNoTxt = findViewById(R.id.boeNoTxt);
         boeDateTxt = findViewById(R.id.boeDateTxt);
@@ -229,6 +231,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 openRegistrationActivity();
             }
         });
+
+        viewDetailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openViewDetailsActivity();
+            }
+        });
     }
 
     public void openStampDutyActivity() {
@@ -238,13 +247,18 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     public void openRegistrationActivity() {
         Intent intent = new Intent(this, RegistrationActivity.class);
-        //intent.putExtra("selectedPartyBean", selectedPartyBean.toString());
         startActivity(intent);
     }
 
-    public ArrayList<StampDutyPartyBean> loadPartyBeanList() {
-        final ArrayList<StampDutyPartyBean> partyBeanArrayList = new ArrayList<>();
+    public void openViewDetailsActivity() {
+        Intent intent = new Intent(this, ViewAllPartyInfoActivity.class);
+        startActivity(intent);
+    }
+
+    public void loadPartyBeanList() {
+        //final ArrayList<StampDutyPartyBean> partyBeanArrayList = new ArrayList<>();
         stampDutyPartyBean = new StampDutyPartyBean();
+        partyBeanMap = new HashMap<>();
         final Context context = getApplicationContext();
         //Default i.e. None
         stampDutyPartyBean.setPAN_NO("");
@@ -253,12 +267,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         stampDutyPartyBean.setCITY("");
         stampDutyPartyBean.setPIN("");
         stampDutyPartyBean.setROAD("");
-        partyBeanArrayList.add(stampDutyPartyBean);
+        partyBeanMap.put(stampDutyPartyBean.getKEY_NAME(), stampDutyPartyBean);
 
         try {
             DatabaseReference stampDutyDatabaseReference = FirebaseDatabase.getInstance().getReference().child("StampDutyPartyInfo");
             stampDutyDatabaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
+                @SuppressWarnings("ConstantConditions")
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Map<String, StampDutyPartyBean> stampDutyDataMap = (Map<String, StampDutyPartyBean>) dataSnapshot.getValue();
                     if (stampDutyDataMap != null) {
@@ -272,14 +287,15 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                                 stampDutyPartyBean.setCITY(singleParty.get("city").toString());
                                 stampDutyPartyBean.setPIN(singleParty.get("pin").toString());
                                 stampDutyPartyBean.setROAD(singleParty.get("road").toString());
-                                partyBeanArrayList.add(stampDutyPartyBean);
-                                Log.d("DB", "partyBeanArrayList loop : " + partyBeanArrayList.toString());
+                                partyBeanMap.put(stampDutyPartyBean.getKEY_NAME(), stampDutyPartyBean);
+                                Log.d("DB", "partyBeanMap loop : " + partyBeanMap.toString());
                             }
                         }
                     }
                     ArrayList<String> nameList = new ArrayList<>();
-                    for (StampDutyPartyBean bean : partyBeanArrayList) {
-                        nameList.add(bean.getKEY_NAME());
+
+                    for (Map.Entry<String, StampDutyPartyBean> entry : partyBeanMap.entrySet()) {
+                        nameList.add(entry.getKey());
                     }
 
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, nameList);
@@ -291,11 +307,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
                 }
             });
-            Log.d("DB", "partyBeanArrayList before : " + partyBeanArrayList.toString());
         } catch (Exception e) {
             Log.e("MainActivity", "loadPartyBeanList() : " + e.getMessage());
         }
-        return partyBeanArrayList;
     }
 
 
@@ -313,10 +327,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             isDropDownProper = false;
         }
 
-        //int partyID = Integer.parseInt(item.substring(0,item.indexOf("_")));
-        for (int i = 0; i < partyBeanArrayList.size(); i++)
-            if (partyBeanArrayList.get(i).getKEY_NAME() == item)
-                selectedPartyBean = partyBeanArrayList.get(i);
+        for (Map.Entry<String, StampDutyPartyBean> entry : partyBeanMap.entrySet()) {
+            if (entry.getKey().equals(item))
+                selectedPartyBean = entry.getValue();
+        }
         Log.d("DB", selectedPartyBean.toString());
     }
 

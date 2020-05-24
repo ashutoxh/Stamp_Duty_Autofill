@@ -28,6 +28,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".RegistrationActivity" />
+        <activity android:name=".ViewAllPartyInfoActivity" />
 
     </application>
 

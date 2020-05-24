@@ -25,12 +25,13 @@ public class RegistrationActivity extends Activity {
     private EditText regPinTxt;
     private StampDutyPartyBean stampDutyPartyBean;
 
-    /*private String regNameString;
-    private String regPanString;
-    private String regBlockString;
-    private String regRoadString;
-    private String regCityString;
-    private String regPinString;*/
+    private boolean isNameProper = false;
+    private boolean isPanProper = false;
+    private boolean isBlockProper = false;
+    private boolean isRoadProper = false;
+    private boolean isCityProper = false;
+    private boolean isPinProper = false;
+    private Button registerButton;
 
     private Context context;
 
@@ -45,7 +46,8 @@ public class RegistrationActivity extends Activity {
         regRoadTxt = findViewById(R.id.regRoadTxt);
         regCityTxt = findViewById(R.id.regCityTxt);
         regPinTxt = findViewById(R.id.regPinTxt);
-        Button registerButton = findViewById(R.id.regButton);
+        registerButton = findViewById(R.id.regButton);
+        registerButton.setEnabled(false);
         context = getApplicationContext();
 
         stampDutyPartyBean = new StampDutyPartyBean();
@@ -53,11 +55,15 @@ public class RegistrationActivity extends Activity {
         regNameTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (regNameTxt.getText().toString().isEmpty() || !regNameTxt.getText().toString().matches("[A-Za-z0-9 ]+"))
+                if (regNameTxt.getText().toString().isEmpty() || !regNameTxt.getText().toString().matches("[A-Za-z0-9 ]+")) {
                     regNameTxt.setError("Only Alphabets and Numbers are allowed");
+                    isNameProper = false;
+                }
                 else {
                     regNameTxt.setError(null);
                     stampDutyPartyBean.setKEY_NAME(regNameTxt.getText().toString().toUpperCase().trim());
+                    isNameProper = true;
+                    registerButton.setEnabled(isPanProper && isBlockProper && isRoadProper && isCityProper && isPinProper);
                 }
             }
 
@@ -74,11 +80,15 @@ public class RegistrationActivity extends Activity {
         regPanTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (regPanTxt.getText().toString().isEmpty() || !regPanTxt.getText().toString().matches("[A-Za-z0-9  ]+"))
+                if (regPanTxt.getText().toString().isEmpty() || !regPanTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regPanTxt.setError("Only Alphabets and Numbers are allowed");
+                    isPanProper = false;
+                }
                 else {
                     regPanTxt.setError(null);
                     stampDutyPartyBean.setPAN_NO(regPanTxt.getText().toString().toUpperCase().trim());
+                    isPanProper = true;
+                    registerButton.setEnabled(isNameProper && isBlockProper && isRoadProper && isCityProper && isPinProper);
                 }
             }
 
@@ -95,11 +105,15 @@ public class RegistrationActivity extends Activity {
         regBlockTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (regBlockTxt.getText().toString().isEmpty() || !regBlockTxt.getText().toString().matches("[A-Za-z0-9  ]+"))
+                if (regBlockTxt.getText().toString().isEmpty() || !regBlockTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regBlockTxt.setError("Only Alphabets and Numbers are allowed");
+                    isBlockProper = false;
+                }
                 else {
                     regBlockTxt.setError(null);
                     stampDutyPartyBean.setBLOCK_NO(regBlockTxt.getText().toString().toUpperCase().trim());
+                    isBlockProper = true;
+                    registerButton.setEnabled(isNameProper && isPanProper && isRoadProper && isCityProper && isPinProper);
                 }
             }
 
@@ -116,11 +130,15 @@ public class RegistrationActivity extends Activity {
         regRoadTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (regRoadTxt.getText().toString().isEmpty() || !regRoadTxt.getText().toString().matches("[A-Za-z0-9  ]+"))
+                if (regRoadTxt.getText().toString().isEmpty() || !regRoadTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regRoadTxt.setError("Only Alphabets and Numbers are allowed");
+                    isRoadProper = false;
+                }
                 else {
                     regRoadTxt.setError(null);
                     stampDutyPartyBean.setROAD(regRoadTxt.getText().toString().toUpperCase().trim());
+                    isRoadProper = true;
+                    registerButton.setEnabled(isNameProper && isPanProper && isBlockProper && isCityProper && isPinProper);
                 }
             }
 
@@ -137,11 +155,15 @@ public class RegistrationActivity extends Activity {
         regCityTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (regCityTxt.getText().toString().isEmpty() || !regCityTxt.getText().toString().matches("[A-Za-z0-9  ]+"))
+                if (regCityTxt.getText().toString().isEmpty() || !regCityTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regCityTxt.setError("Only Alphabets and Numbers are allowed");
+                    isCityProper = false;
+                }
                 else {
                     regCityTxt.setError(null);
                     stampDutyPartyBean.setCITY(regCityTxt.getText().toString().toUpperCase().trim());
+                    isCityProper = true;
+                    registerButton.setEnabled(isNameProper && isPanProper && isBlockProper && isRoadProper && isPinProper);
                 }
             }
 
@@ -158,11 +180,15 @@ public class RegistrationActivity extends Activity {
         regPinTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (regPinTxt.getText().toString().length() != 6 || !regPinTxt.getText().toString().matches("[0-9]+"))
+                if (regPinTxt.getText().toString().length() != 6 || !regPinTxt.getText().toString().matches("[0-9]+")) {
                     regPinTxt.setError("Only 6 digit numbers are allowed");
+                    isPinProper = false;
+                }
                 else {
                     regPinTxt.setError(null);
                     stampDutyPartyBean.setPIN(regPinTxt.getText().toString().toUpperCase().trim());
+                    isPinProper = true;
+                    registerButton.setEnabled(isNameProper && isPanProper && isBlockProper && isRoadProper && isCityProper);
                 }
             }
 
@@ -181,7 +207,6 @@ public class RegistrationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    //insertDataInLocal(regNameString, regPanString, regBlockString, regRoadString, regCityString, regPinString);
                     insertDataInFirebaseDB(stampDutyPartyBean);
                     Intent intent = new Intent(context, MainActivity.class);
                     Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show();

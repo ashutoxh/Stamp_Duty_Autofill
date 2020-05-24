@@ -50,6 +50,16 @@ public class StampDutyActivity extends Activity {
         mWebView.getSettings().setLoadWithOverviewMode(true);
         //mWebView.getSettings().setSupportMultipleWindows(true);
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        /*mWebView.setDownloadListener(new DownloadListener() {
+            public void onDownloadStart(String url, String userAgent,
+                                        String contentDisposition, String mimetype,
+                                        long contentLength) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });*/
+
         mWebView.setWebChromeClient(new WebChromeClient() {             //For GRN popup
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {

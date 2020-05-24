@@ -24,155 +24,179 @@
         android:id="@+id/regName"
         android:layout_width="100dp"
         android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Name"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/regPan"
         android:layout_width="100dp"
         android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Pan"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regName" />
 
     <TextView
         android:id="@+id/regBlock"
         android:layout_width="100dp"
         android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Block No"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regPan" />
 
     <TextView
         android:id="@+id/regRoad"
         android:layout_width="100dp"
         android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Road"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regBlock" />
 
     <TextView
         android:id="@+id/regPin"
         android:layout_width="100dp"
         android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Pin"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regArea" />
 
     <TextView
         android:id="@+id/regArea"
         android:layout_width="100dp"
         android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Area/City"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regRoad" />
 
     <EditText
         android:id="@+id/regCityTxt"
-        android:layout_width="220dp"
+        android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@android:color/darker_gray"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/regRoadTxt" />
 
     <EditText
         android:id="@+id/regNameTxt"
-        android:layout_width="220dp"
+        android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="20dp"
         android:background="@android:color/darker_gray"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
         android:id="@+id/regPanTxt"
-        android:layout_width="220dp"
+        android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@android:color/darker_gray"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/regNameTxt" />
 
     <EditText
         android:id="@+id/regBlockTxt"
-        android:layout_width="220dp"
+        android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@android:color/darker_gray"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/regPanTxt" />
 
     <EditText
         android:id="@+id/regRoadTxt"
-        android:layout_width="220dp"
+        android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@android:color/darker_gray"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/regBlockTxt" />
 
     <EditText
         android:id="@+id/regPinTxt"
-        android:layout_width="220dp"
+        android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@android:color/darker_gray"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/regCityTxt" />
 
@@ -181,7 +205,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="150dp" />
+        app:layout_constraintGuide_begin="131dp" />
 
     <Button
         android:id="@+id/regButton"

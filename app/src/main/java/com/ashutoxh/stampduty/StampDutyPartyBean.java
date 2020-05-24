@@ -9,21 +9,6 @@ public class StampDutyPartyBean {
     private String PIN;
     private String KEY_ID;
 
-    public StampDutyPartyBean() {
-
-    }
-
-
-    public StampDutyPartyBean(String KEY_ID, String KEY_NAME, String PAN_NO, String BLOCK_NO, String ROAD, String CITY, String PIN) {
-        this.KEY_ID = KEY_ID;
-        this.PAN_NO = PAN_NO;
-        this.KEY_NAME = KEY_NAME;
-        this.BLOCK_NO = BLOCK_NO;
-        this.ROAD = ROAD;
-        this.CITY = CITY;
-        this.PIN = PIN;
-    }
-
     @Override
     public String toString() {
         return "StampDutyPartyBean{" +
