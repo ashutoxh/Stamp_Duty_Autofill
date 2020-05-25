@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,11 +43,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private long back_pressed;
     private Toast exitToast;
     private Button submitButton;
-    private EditText boeNoTxt;
-    private EditText boeDateTxt;
-    private EditText igmNoTxt;
-    private EditText itemNoTxt;
-    private EditText amountTxt;
+    public static EditText boeNoTxt;
+    public static EditText boeDateTxt;
+    public static EditText igmNoTxt;
+    public static EditText itemNoTxt;
+    public static EditText amountTxt;
     private String igmNoString;
     private String boeNoString;
     private String boeDateString;
@@ -69,180 +70,184 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try {
+            partyDropDown = findViewById(R.id.partyDropDown);
+            partyDropDown.setOnItemSelectedListener(this);
 
-        partyDropDown = findViewById(R.id.partyDropDown);
-        partyDropDown.setOnItemSelectedListener(this);
+            loadPartyBeanList();
 
-        loadPartyBeanList();
+            submitButton = findViewById(R.id.submitButton);
+            submitButton.setEnabled(false);
+            Button registrationButton = findViewById(R.id.registrationButtonMain);
+            viewDetailsButton = findViewById(R.id.viewButtonMain);
+            viewDetailsButton.setEnabled(false);
 
-        submitButton = findViewById(R.id.submitButton);
-        submitButton.setEnabled(false);
-        Button registrationButton = findViewById(R.id.registrationButtonMain);
-        viewDetailsButton = findViewById(R.id.viewButtonMain);
-        viewDetailsButton.setEnabled(false);
+            boeNoTxt = findViewById(R.id.boeNoTxt);
+            boeDateTxt = findViewById(R.id.boeDateTxt);
+            igmNoTxt = findViewById(R.id.igmNoTxt);
+            itemNoTxt = findViewById(R.id.itemNoTxt);
+            amountTxt = findViewById(R.id.amountTxt);
 
-        boeNoTxt = findViewById(R.id.boeNoTxt);
-        boeDateTxt = findViewById(R.id.boeDateTxt);
-        igmNoTxt = findViewById(R.id.igmNoTxt);
-        itemNoTxt = findViewById(R.id.itemNoTxt);
-        amountTxt = findViewById(R.id.amountTxt);
+            RadioGroup radioGroup = findViewById(R.id.radioGroup);
+            radioGroup.clearCheck();
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    Log.d("chk", "id" + checkedId);
 
-        RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        radioGroup.clearCheck();
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Log.d("chk", "id" + checkedId);
-
-                if (checkedId == R.id.seaRadioButton) {
-                    modeOfConsignment = "SEA";
-                } else if (checkedId == R.id.airRadioButton) {
-                    modeOfConsignment = "AIR";
+                    if (checkedId == R.id.seaRadioButton) {
+                        modeOfConsignment = "SEA";
+                    } else if (checkedId == R.id.airRadioButton) {
+                        modeOfConsignment = "AIR";
+                    }
                 }
-            }
-        });
+            });
 
-        RadioButton seaRadioButton = findViewById(R.id.seaRadioButton);
-        seaRadioButton.setChecked(true);
+            RadioButton seaRadioButton = findViewById(R.id.seaRadioButton);
+            seaRadioButton.setChecked(true);
 
-        boeNoTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (boeNoTxt.getText().toString().length() != 7 || !boeNoTxt.getText().toString().matches("[0-9]+")) {
-                    boeNoTxt.setError("BOE NO should be a number and 7 digit long");
-                    isBoeNoProper = false;
-                } else {
-                    boeNoTxt.setError(null);
-                    boeNoString = boeNoTxt.getText().toString().trim();
-                    isBoeNoProper = true;
-                    submitButton.setEnabled(isDropDownProper && isBoeDateProper && isIgmNoProper && isItemNoProper && isAmountProper);
+            boeNoTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (boeNoTxt.getText().toString().length() != 7 || !boeNoTxt.getText().toString().matches("[0-9]+")) {
+                        boeNoTxt.setError("BOE NO should be a number and 7 digit long");
+                        isBoeNoProper = false;
+                    } else {
+                        boeNoTxt.setError(null);
+                        boeNoString = boeNoTxt.getText().toString().trim();
+                        isBoeNoProper = true;
+                        submitButton.setEnabled(isDropDownProper && isBoeDateProper && isIgmNoProper && isItemNoProper && isAmountProper);
+                    }
                 }
-            }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        boeDateTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (boeDateTxt.getText().toString().isEmpty()) {
-                    boeDateTxt.setError("Please enter a date");
-                    isBoeDateProper = false;
-                } else {
-                    boeDateTxt.setError(null);
-                    boeDateString = boeDateTxt.getText().toString().trim();
-                    isBoeDateProper = true;
-                    submitButton.setEnabled(isDropDownProper && isBoeNoProper && isIgmNoProper && isItemNoProper && isAmountProper);
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
-            }
-        });
 
-        igmNoTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (igmNoTxt.getText().toString().length() != 7 || !igmNoTxt.getText().toString().matches("[0-9]+") || igmNoTxt.getText().toString().isEmpty()) {
-                    igmNoTxt.setError("IGM NO should be a number and 7 digit long");
-                    isIgmNoProper = false;
-                } else {
-                    igmNoTxt.setError(null);
-                    igmNoString = igmNoTxt.getText().toString().trim();
-                    isIgmNoProper = true;
-                    submitButton.setEnabled(isDropDownProper && isBoeNoProper && isBoeDateProper && isItemNoProper && isAmountProper);
                 }
-            }
-        });
+            });
 
-        itemNoTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (itemNoTxt.getText().toString().isEmpty() || !itemNoTxt.getText().toString().matches("[0-9 ]+")) {
-                    itemNoTxt.setError("ITEM NO should be a number");
-                    isItemNoProper = false;
-                } else {
-                    itemNoTxt.setError(null);
-                    itemNoString = itemNoTxt.getText().toString().trim();
-                    isItemNoProper = true;
-                    submitButton.setEnabled(isDropDownProper && isBoeNoProper && isBoeDateProper && isIgmNoProper && isAmountProper);
+            boeDateTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
                 }
-            }
-        });
 
-        amountTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (amountTxt.getText().toString().isEmpty() || !amountTxt.getText().toString().matches("[0-9]+")) {
-                    amountTxt.setError("AMOUNT should be a number");
-                    isAmountProper = false;
-                } else {
-                    amountTxt.setError(null);
-                    amountString = amountTxt.getText().toString().trim();
-                    isAmountProper = true;
-                    submitButton.setEnabled(isDropDownProper && isBoeNoProper && isBoeDateProper && isIgmNoProper && isItemNoProper);
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
-            }
-        });
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remarksString = "IMPORTED VIDE BOE NO " + boeNoString + " DT " + boeDateString
-                        + " IGM NO " + igmNoString + " ITEM NO " + itemNoString;
-                openStampDutyActivity();
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (boeDateTxt.getText().toString().isEmpty()) {
+                        boeDateTxt.setError("Please enter a date");
+                        isBoeDateProper = false;
+                    } else {
+                        boeDateTxt.setError(null);
+                        boeDateString = boeDateTxt.getText().toString().trim();
+                        isBoeDateProper = true;
+                        submitButton.setEnabled(isDropDownProper && isBoeNoProper && isIgmNoProper && isItemNoProper && isAmountProper);
+                    }
+                }
+            });
 
-        registrationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRegistrationActivity();
-            }
-        });
+            igmNoTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
-        viewDetailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openViewDetailsActivity();
-            }
-        });
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (igmNoTxt.getText().toString().length() != 7 || !igmNoTxt.getText().toString().matches("[0-9]+") || igmNoTxt.getText().toString().isEmpty()) {
+                        igmNoTxt.setError("IGM NO should be a number and 7 digit long");
+                        isIgmNoProper = false;
+                    } else {
+                        igmNoTxt.setError(null);
+                        igmNoString = igmNoTxt.getText().toString().trim();
+                        isIgmNoProper = true;
+                        submitButton.setEnabled(isDropDownProper && isBoeNoProper && isBoeDateProper && isItemNoProper && isAmountProper);
+                    }
+                }
+            });
+
+            itemNoTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (itemNoTxt.getText().toString().isEmpty() || !itemNoTxt.getText().toString().matches("[0-9 ]+")) {
+                        itemNoTxt.setError("ITEM NO should be a number");
+                        isItemNoProper = false;
+                    } else {
+                        itemNoTxt.setError(null);
+                        itemNoString = itemNoTxt.getText().toString().trim();
+                        isItemNoProper = true;
+                        submitButton.setEnabled(isDropDownProper && isBoeNoProper && isBoeDateProper && isIgmNoProper && isAmountProper);
+                    }
+                }
+            });
+
+            amountTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (amountTxt.getText().toString().isEmpty() || !amountTxt.getText().toString().matches("[0-9]+")) {
+                        amountTxt.setError("AMOUNT should be a number");
+                        isAmountProper = false;
+                    } else {
+                        amountTxt.setError(null);
+                        amountString = amountTxt.getText().toString().trim();
+                        isAmountProper = true;
+                        submitButton.setEnabled(isDropDownProper && isBoeNoProper && isBoeDateProper && isIgmNoProper && isItemNoProper);
+                    }
+                }
+            });
+
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    remarksString = "IMPORTED VIDE BOE NO " + boeNoString + " DT " + boeDateString
+                            + " IGM NO " + igmNoString + " ITEM NO " + itemNoString;
+                    openStampDutyActivity();
+                }
+            });
+
+            registrationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openRegistrationActivity();
+                }
+            });
+
+            viewDetailsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openViewDetailsActivity();
+                }
+            });
+        } catch (Exception e) {
+            Log.e("MainActivity", "onCreate : " + e.getMessage());
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     public void openStampDutyActivity() {
@@ -314,6 +319,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             });
         } catch (Exception e) {
             Log.e("MainActivity", "loadPartyBeanList() : " + e.getMessage());
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

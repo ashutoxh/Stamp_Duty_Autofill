@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -208,6 +209,7 @@ public class RegistrationActivity extends Activity {
                     finish();
                 } catch (Exception e) {
                     Log.e("RegistrationActivity", "registerButton : onClick() : " + e.getMessage());
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
         });
@@ -220,6 +222,7 @@ public class RegistrationActivity extends Activity {
             stampDutyDatabaseReference.child(String.valueOf(stampDutyPartyBean.getKEY_NAME())).setValue(stampDutyPartyBean);
         } catch (Exception e) {
             Log.e("RegistrationActivity", "insertDataInFirebaseDB : " + e.getMessage());
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 }
