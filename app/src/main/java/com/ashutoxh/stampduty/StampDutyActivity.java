@@ -2,6 +2,9 @@ package com.ashutoxh.stampduty;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -50,42 +53,6 @@ public class StampDutyActivity extends Activity {
         mWebView.getSettings().setLoadWithOverviewMode(true);
         //mWebView.getSettings().setSupportMultipleWindows(true);
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        /*mWebView.setDownloadListener(new DownloadListener()
-        {
-            @Override
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimeType,
-                                        long contentLength) {
-                DownloadManager.Request request = new DownloadManager.Request(
-                        Uri.parse(url));
-                request.setMimeType(mimeType);
-                String cookies = CookieManager.getInstance().getCookie(url);
-                request.addRequestHeader("cookie", cookies);
-                request.addRequestHeader("User-Agent", userAgent);
-                request.setDescription("Downloading File...");
-                request.setTitle(URLUtil.guessFileName(url, contentDisposition, mimeType));
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(
-                        Environment.DIRECTORY_DOWNLOADS, URLUtil.guessFileName(
-                                url, contentDisposition, mimeType));
-                DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                dm.enqueue(request);
-                Toast.makeText(getApplicationContext(), "Downloading File", Toast.LENGTH_LONG).show();
-            }});*/
-
-        /*mWebView.setDownloadListener(new DownloadListener() {
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimetype,
-                                        long contentLength) {
-                DownloadManager.Request request = new DownloadManager.Request( Uri.parse(url));
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Tp.pdf");
-                DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                dm.enqueue(request);
-            }
-        });*/
 
         mWebView.setWebChromeClient(new WebChromeClient() {             //For GRN popup
             @Override
@@ -95,24 +62,34 @@ public class StampDutyActivity extends Activity {
             }
         });
         mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                if (url.contains(getResources().getString(R.string.paymentURL))) {
+                    mWebView.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    waitTxt.setVisibility(View.VISIBLE);
+                }
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                /*FOR DOWLOAD TEST progressBar.setVisibility(View.INVISIBLE);
-                waitTxt.setVisibility(View.INVISIBLE);
-                mWebView.setVisibility(View.VISIBLE);*/
 
                 if (url.contains(getResources().getString(R.string.indexURI))) {
                     view.loadUrl(getResources().getString(R.string.callPage2));
-                    Log.d("StampDutyActivity", getResources().getString(R.string.callPage2));
                 } else if (url.contains(getResources().getString(R.string.revenueindexURI))) {
                     view.loadUrl(getResources().getString(R.string.callPage3));
-                    Log.d("StampDutyActivity", getResources().getString(R.string.callPage3));
                 } else if (url.contains(getResources().getString(R.string.formURI))) {
                     injectScriptFile(view); // see below ...
                     progressBar.setVisibility(View.INVISIBLE);
                     waitTxt.setVisibility(View.INVISIBLE);
                     mWebView.setVisibility(View.VISIBLE);
+                } else if (url.contains(getResources().getString(R.string.paymentURL))) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                    finish();
                 }
             }
 

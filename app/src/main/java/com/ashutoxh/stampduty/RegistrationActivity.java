@@ -58,8 +58,7 @@ public class RegistrationActivity extends Activity {
                 if (regNameTxt.getText().toString().isEmpty() || !regNameTxt.getText().toString().matches("[A-Za-z0-9 ]+")) {
                     regNameTxt.setError("Only Alphabets and Numbers are allowed");
                     isNameProper = false;
-                }
-                else {
+                } else {
                     regNameTxt.setError(null);
                     stampDutyPartyBean.setKEY_NAME(regNameTxt.getText().toString().toUpperCase().trim());
                     isNameProper = true;
@@ -83,8 +82,7 @@ public class RegistrationActivity extends Activity {
                 if (regPanTxt.getText().toString().isEmpty() || !regPanTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regPanTxt.setError("Only Alphabets and Numbers are allowed");
                     isPanProper = false;
-                }
-                else {
+                } else {
                     regPanTxt.setError(null);
                     stampDutyPartyBean.setPAN_NO(regPanTxt.getText().toString().toUpperCase().trim());
                     isPanProper = true;
@@ -108,8 +106,7 @@ public class RegistrationActivity extends Activity {
                 if (regBlockTxt.getText().toString().isEmpty() || !regBlockTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regBlockTxt.setError("Only Alphabets and Numbers are allowed");
                     isBlockProper = false;
-                }
-                else {
+                } else {
                     regBlockTxt.setError(null);
                     stampDutyPartyBean.setBLOCK_NO(regBlockTxt.getText().toString().toUpperCase().trim());
                     isBlockProper = true;
@@ -133,8 +130,7 @@ public class RegistrationActivity extends Activity {
                 if (regRoadTxt.getText().toString().isEmpty() || !regRoadTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regRoadTxt.setError("Only Alphabets and Numbers are allowed");
                     isRoadProper = false;
-                }
-                else {
+                } else {
                     regRoadTxt.setError(null);
                     stampDutyPartyBean.setROAD(regRoadTxt.getText().toString().toUpperCase().trim());
                     isRoadProper = true;
@@ -158,8 +154,7 @@ public class RegistrationActivity extends Activity {
                 if (regCityTxt.getText().toString().isEmpty() || !regCityTxt.getText().toString().matches("[A-Za-z0-9  ]+")) {
                     regCityTxt.setError("Only Alphabets and Numbers are allowed");
                     isCityProper = false;
-                }
-                else {
+                } else {
                     regCityTxt.setError(null);
                     stampDutyPartyBean.setCITY(regCityTxt.getText().toString().toUpperCase().trim());
                     isCityProper = true;
@@ -183,8 +178,7 @@ public class RegistrationActivity extends Activity {
                 if (regPinTxt.getText().toString().length() != 6 || !regPinTxt.getText().toString().matches("[0-9]+")) {
                     regPinTxt.setError("Only 6 digit numbers are allowed");
                     isPinProper = false;
-                }
-                else {
+                } else {
                     regPinTxt.setError(null);
                     stampDutyPartyBean.setPIN(regPinTxt.getText().toString().toUpperCase().trim());
                     isPinProper = true;

@@ -261,7 +261,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     public void loadPartyBeanList() {
-        //final ArrayList<StampDutyPartyBean> partyBeanArrayList = new ArrayList<>();
         stampDutyPartyBean = new StampDutyPartyBean();
         partyBeanMap = new HashMap<>();
         final Context context = getApplicationContext();
@@ -325,7 +324,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         String item = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
-        if (!item.equals("None")) {
+        if (!item.equals("-None-")) {
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
             isDropDownProper = true;
             submitButton.setEnabled(isBoeNoProper && isBoeDateProper && isIgmNoProper && isItemNoProper && isAmountProper);

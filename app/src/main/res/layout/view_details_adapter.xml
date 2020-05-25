@@ -192,10 +192,10 @@
         android:gravity="center|start|left"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/regCityTxt"
-        android:singleLine="true" />
+        app:layout_constraintTop_toBottomOf="@+id/regCityTxt" />
 
     <TextView
         android:id="@+id/dividerFooter"
